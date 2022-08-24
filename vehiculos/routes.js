@@ -1,5 +1,5 @@
 const express = require('express')
-const { Tipo, Vehiculo } = require('./db/models.js')
+const { crearTipo } = require('./db/funciones.js')
 
 const router = express.Router()
 
@@ -13,6 +13,19 @@ router.get('/new-tipo', (req, res) => {
 
 router.get('/new-vehiculo', (req, res) => {
   res.render('new-vehiculo.html')
+})
+
+router.post('/tipos', async (req, res) => {
+  // 1. Obtengo los valores del formulario
+  const nombre = req.body.nombre
+  
+  try {
+    await crearTipo(nombre)
+  }
+  catch (error) {
+    console.log(error);
+  }
+  res.redirect('/new-tipo')
 })
 
 

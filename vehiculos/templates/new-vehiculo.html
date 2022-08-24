@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
+{% from 'macros.html' import navbar %}
 
 {% block main %}
+  {{ navbar('/new-vehiculo') }}
   <h1 class="text-center text-primary">Ingresar Nuevo Vehículo</h1>
   <div class="container">
     <div class="row">
