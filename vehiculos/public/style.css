@@ -1,0 +1,12 @@
+.auto {
+  width: 22rem;
+  margin: 0 auto;
+  display: block;
+  border-radius: 1rem;
+}
+
+footer {
+  min-height: 5rem;
+  background-color: darkred;
+  color: white;
+}

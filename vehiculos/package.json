@@ -1,5 +1,5 @@
 {
-  "name": "roommates",
+  "name": "vehiculos",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,9 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.27.2",
-    "bootstrap": "^5.2.0",
+    "chokidar": "^3.5.3",
     "express": "^4.18.1",
-    "pg": "^8.7.3",
-    "uuid": "^8.3.2"
+    "nunjucks": "^3.2.3",
+    "pg": "^8.8.0",
+    "sequelize": "^6.21.4"
   }
 }
