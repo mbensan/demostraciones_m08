@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Words</title>
+  <style>
+    h3, h4, p {
+      text-align: center;
+    }
+    h4 {
+      color: blueviolet;
+    }
+    h3 {
+      padding: 2rem;
+      border: 2px solid maroon;
+      border-radius: 2rem;
+      width: 50%;
+      margin: 1rem auto;
+    }
+    a {
+      padding: 1rem;
+      background-color: burlywood;
+      /* margin-top: 11rem; */
+      border-radius: 1rem;
+      border: 1px solid black;
+    }
+    p {
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="contaniner">
+    <h4>Usted lleva {{intentos}} intento{% if intentos > 1 %}s{% endif %}</h4>
+    <h3>Su palabra es: {{palabra}}</h3>
+    <p><a href="/random/reset">Volver a 0</a></p>
+  </div>
+</body>
+</html>
