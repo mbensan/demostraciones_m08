@@ -16,6 +16,8 @@ nunjucks.configure(path.resolve(__dirname, "templates"), {
   watch: true,
 });
 
+app.use(express.urlencoded({extended: true}))
+
 app.get('/', (req, res) => {
   const letras = req.session.letras || ''
   res.send(`Letras: ${letras}`)
@@ -53,6 +55,13 @@ app.get('/random', (req, res) => {
 app.get('/random/reset', (req, res) => {
   req.session.intentos = 0
   res.redirect('/random')
+})
+
+app.post('/procesar', (req, res) => {
+  const nombre = req.body.nombre
+  const animal = req.body.animal
+
+  res.send(`Hola. Eres ${animal} ${nombre}`)
 })
 
 app.listen(3000, () => {

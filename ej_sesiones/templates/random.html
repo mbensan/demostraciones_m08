@@ -29,13 +29,34 @@
     p {
       margin-top: 2rem;
     }
+    form {
+      margin: 2rem;
+      border: 2px solid black;
+    }
   </style>
 </head>
 <body>
-  <div class="contaniner">
+  <div class="container">
     <h4>Usted lleva {{intentos}} intento{% if intentos > 1 %}s{% endif %}</h4>
     <h3>Su palabra es: {{palabra}}</h3>
     <p><a href="/random/reset">Volver a 0</a></p>
   </div>
+
+  <form action="/procesar" method="post">
+    <input type="hidden" name="animal" value="el cocodrilo">
+    <h4>Formulario de los cocodrilos</h4>
+    <p>Nombre: <input type="text" name="nombre"></p>
+    <p><input type="submit" value="Enviar"></p>
+  </form>
+
+  <form action="/procesar" method="post">
+    <input type="hidden" name="animal" value="la tortuga">
+    <h4>Formulario de las tortugas</h4>
+    <p>Nombre: <input type="text" name="nombre"></p>
+    <p><input type="submit" value="Enviar"></p>
+  </form>
+
+
+
 </body>
 </html>
