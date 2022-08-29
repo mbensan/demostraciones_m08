@@ -1,21 +1,8 @@
 const { Router } = require('express')
-const router = Router()
-
+const bcrypt = require('bcrypt')
 const { get_user, create_user } = require('../db/users.js')
 
-const USERS = [
-  {
-    name: 'Tony Montana',
-    email: "tony@mail.com",
-    password: "1234"
-  },
-  {
-    name: 'Matias José',
-    email: "mbensan@gmail.com",
-    password: "9876"
-  }
-]
-
+const router = Router()
 
 // ruta que carga el formulario del login
 router.get('/login', (req, res) => {
@@ -37,7 +24,8 @@ router.post('/login', async (req, res) => {
   }
 
   // 3. verificamos las contraseñas
-  if (user_buscado.password != password) {
+  const son_coincidentes = await bcrypt.compare(password, user_buscado.password)
+  if (!son_coincidentes) {
     req.flash('errors', 'Usuario es inexistente o contraseña incorrecta')
     return res.redirect('/login')
   }
@@ -82,7 +70,8 @@ router.post('/register', async (req, res) => {
   }
 
   // 4. Finalmente lo agregamos a la base de datos
-  await create_user(name, email, password)
+  const encrypted_pass = await bcrypt.hash(password, 10)
+  await create_user(name, email, encrypted_pass)
   req.session.user = { name, email }
 
   // 5. y redirigimos a la ruta principal
