@@ -2,8 +2,10 @@
   "dependencies": {
     "bootstrap": "^5.2.0",
     "chokidar": "^3.5.3",
+    "connect-flash": "^0.1.1",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
-    "nunjucks": "^3.2.3"
+    "nunjucks": "^3.2.3",
+    "pg": "^8.8.0"
   }
 }

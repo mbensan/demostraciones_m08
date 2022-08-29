@@ -1,6 +1,8 @@
 const { Router } = require('express')
 const router = Router()
 
+const { get_user, create_user } = require('../db/users.js')
+
 const USERS = [
   {
     name: 'Tony Montana',
@@ -17,41 +19,35 @@ const USERS = [
 
 // ruta que carga el formulario del login
 router.get('/login', (req, res) => {
-  res.render('login.html')
+  const messages = req.flash()
+  res.render('login.html', { messages })
 })
 
 // ruta que procesa el formulario de Login
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   // 1. me traigo los datos del formulario
   const email = req.body.email.trim()
   const password = req.body.password.trim()
 
-  // 2. intento buscar al usuario en base a su email y contraseña 
-  let user_buscado;
-  for (let user of USERS) {
-    if (user.email == email) {
-      user_buscado = user;
-      break
-    }
-  }
-
-  // 3. Verificamos si el usuario existe o no
+  // 2. intento buscar al usuario en base a su email 
+  let user_buscado = await get_user(email)
   if (!user_buscado) {
-    console.log('Usuario no encontrado');
+    req.flash('errors', 'Usuario es inexistente o contraseña incorrecta')
     return res.redirect('/login')
   }
 
-  // 4.  Ahora si sabemos que existe un usuario con ese email, vamos a verificar las contraseñas
+  // 3. verificamos las contraseñas
   if (user_buscado.password != password) {
-    console.log('Contraseñas no existen');
+    req.flash('errors', 'Usuario es inexistente o contraseña incorrecta')
     return res.redirect('/login')
   }
-
-  // 5. Si el usuario efectivamente existe, y las contraseñas coinciden, entonces lo guardamos en sesión
-  console.log('TODO BIEN');
-  req.session.user = user_buscado;
-
-  res.redirect('/')
+  
+  // PARTE FINAL
+  req.session.user = {
+    name: user_buscado.name,
+    email: user_buscado.email
+  }
+  return res.redirect('/')  
 })
 
 router.get('/logout', (req, res) => {
@@ -60,11 +56,37 @@ router.get('/logout', (req, res) => {
 })
 
 router.get('/register', (req, res) => {
-  res.send('No implementado')
+  const messages = req.flash()
+  console.log(messages);
+  res.render('register.html', {messages})
 })
 
-router.post('/register', (req, res) => {
-  res.send('No implementado')
+router.post('/register', async (req, res) => {
+  // 1. me traigo los datos del formulario
+  const name = req.body.name.trim()
+  const email = req.body.email.trim()
+  const password = req.body.password.trim()
+  const password_repeat = req.body.password_repeat.trim()
+
+  // 2. validamos que contraseñas coincidan
+  if (password != password_repeat) {
+    req.flash('errors', 'Las contraseñas no coinciden')
+    return res.redirect('/register')
+  }
+
+  // 3. validamos que no exista otro usuario con ese mismo correo
+  const current_user = await get_user(email)
+  if (current_user) {
+    req.flash('errors', 'Ese email ya está ocupado')
+    return res.redirect('/register')
+  }
+
+  // 4. Finalmente lo agregamos a la base de datos
+  await create_user(name, email, password)
+  req.session.user = { name, email }
+
+  // 5. y redirigimos a la ruta principal
+  res.redirect('/')
 })
 
 module.exports = router;

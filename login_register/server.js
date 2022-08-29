@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const nunjucks = require('nunjucks')
 const path = require('path')
+const flash = require('connect-flash')
 
 const app = express()
 
@@ -10,6 +11,7 @@ app.use(session({secret: 'hmit'}))
 
 // se configuran archivos estáticos
 app.use(express.static('./node_modules/bootstrap/dist'))
+app.use(express.static('./public'))
 
 // se configura nunjucks
 nunjucks.configure(path.resolve(__dirname, "templates"), {
@@ -21,6 +23,9 @@ nunjucks.configure(path.resolve(__dirname, "templates"), {
 
 // se configura uso de formularios
 app.use(express.urlencoded({extended: true}))
+
+// se configura uso de mensajes flash
+app.use(flash())
 
 // se traen las rutas
 app.use(require('./routes/auth'))
