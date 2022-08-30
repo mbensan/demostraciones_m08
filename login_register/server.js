@@ -3,11 +3,21 @@ const session = require('express-session');
 const nunjucks = require('nunjucks')
 const path = require('path')
 const flash = require('connect-flash')
+const pool = require('./db/pool.js')
+const pgSession = require('connect-pg-simple')(session)
 
 const app = express()
 
 // se configura uso de sesiones
-app.use(session({secret: 'hmit'}))
+// https://github.com/voxpelli/node-connect-pg-simple
+app.use(session({
+  store: new pgSession({
+    pool: pool
+  }),
+  secret: 'hmit',
+  resave: false,
+  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }
+}))
 
 // se configuran archivos estáticos
 app.use(express.static('./node_modules/bootstrap/dist'))
