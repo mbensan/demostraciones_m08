@@ -3,5 +3,18 @@
 
 {% block main %}
   {{ navbar('/dos', user) }}
-  <h2 class="text-center">Página DOS. Usuario: {{user.email}}</h2>
+  <h2 class="text-center">Subir panorama para: {{user.email}}</h2>
+  <div class="row">
+    <form action="/panorama" method="post" enctype="multipart/form-data" class="col-4 offset-4">
+      <div class="mb-3">
+        <label for="">Nombre</label>
+        <input type="text" required class="form-control" name="name">
+      </div>
+      <div class="mb-3">
+        <label for="">Imagen</label>
+        <input type="file" required class="form-control" name="image">
+      </div>
+      <button type="submit" class="btn btn-primary">Subir Panorama</button>
+    </form>
+  </div>
 {% endblock %}

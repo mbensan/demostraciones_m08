@@ -5,6 +5,7 @@ const path = require('path')
 const flash = require('connect-flash')
 const pool = require('./db/pool.js')
 const pgSession = require('connect-pg-simple')(session)
+const fileUpload = require('express-fileupload')
 
 const app = express()
 
@@ -33,6 +34,13 @@ nunjucks.configure(path.resolve(__dirname, "templates"), {
 
 // se configura uso de formularios
 app.use(express.urlencoded({extended: true}))
+
+// se configura subida de archivos
+app.use(fileUpload({
+  limits: { fileSize: 5242880 },
+  abortOnLimit: true,
+  responseOnLimit: 'El peso del archivo no puede superar los 5 Mb (abusador!)'
+}))
 
 // se configura uso de mensajes flash
 app.use(flash())

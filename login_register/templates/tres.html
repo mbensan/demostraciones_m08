@@ -3,5 +3,15 @@
 
 {% block main %}
   {{ navbar('/tres', user) }}
-  <h2 class="text-center">Página TRES. {{user.email}}</h2>
+  <h2 class="text-center">Panoramas {{user.email}}</h2>
+  <div class="row">
+    <div class="col-4 offset-4">
+      {% for panorama in panoramas %}
+        <div class="p-4 bg-secondary br-4">
+          <img src="/uploaded/{{panorama.image}}" alt="" class="w-100 d-block">
+          <h5 class="text-center">{{ panorama.name }}</h5>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
 {% endblock %}
